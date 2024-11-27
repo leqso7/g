@@ -1,6 +1,6 @@
 {
-  "name": "გამარჯობა",
-  "short_name": "გამარჯობა",
+  "name": "კლასის მენეჯერი",
+  "short_name": "კლასის მენეჯერი",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
