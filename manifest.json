@@ -1,7 +1,7 @@
 {
   "name": "გამარჯობა",
   "short_name": "გამარჯობა",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
@@ -21,7 +21,10 @@
   ],
   "prefer_related_applications": false,
   "orientation": "portrait",
-  "scope": "./",
+  "scope": "/",
   "offline_enabled": true,
-  "description": "სტუდენტების დაჯგუფების აპლიკაცია"
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ]
 }
