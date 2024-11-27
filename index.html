@@ -591,7 +591,7 @@ button {
 .names-container {
   flex: 1;
   overflow-y: auto; /* ვერტიკალური სქროლი */
-  max-height: 40vh; /* სახელების კონტეინერის მაქსიმალური სიმაღლე */
+  max-height: 40vh; /* სახელების კონტეინერის მა����სიმალური სიმაღლე */
   margin: 10px 0;
   padding-right: 5px; /* ადგილი სქროლბარისთვის */
 }
@@ -934,6 +934,39 @@ button {
   // გლობალურად გავხადოთ ხელმისაწვდომი
   window.checkUserAccess = checkUserAccess;
   window.updateUserActivity = updateUserActivity;
+
+  // ლოკალურად შევინახოთ საჭირო მონაცემები
+  function storeDataLocally(data) {
+    localStorage.setItem('offlineData', JSON.stringify(data));
+    localStorage.setItem('lastUpdateTime', Date.now().toString());
+  }
+
+  // წავიკითხოთ ლოკალური მონაცემები
+  function getLocalData() {
+    const data = localStorage.getItem('offlineData');
+    return data ? JSON.parse(data) : null;
+  }
+
+  // მონაცემების სინქრონიზაცია
+  async function syncData() {
+    if (navigator.onLine) {
+      try {
+        // აქ დაამატეთ თქვენი მონაცემების სინქრონიზაციის ლოგიკა
+        const localData = getLocalData();
+        if (localData) {
+          // განაახლეთ სერვერზე
+        }
+      } catch (error) {
+        console.error('სინქრონიზაციის შეცდომა:', error);
+      }
+    }
+  }
+
+  // ვამოწმებთ ონლაინ სტატუსს
+  window.addEventListener('online', syncData);
+  window.addEventListener('offline', () => {
+    console.log('გადავედით ოფლაინ რეჟიმში');
+  });
 </script>
 </head>
 <body style="background-color: white;"><div id="product-content" style="display: block;">
@@ -941,7 +974,7 @@ button {
   
 </div>
 <button id="downloadButton" style="display:none;">ჩამოტვირთვა</button>
-<div id="timer" style="display: block;">დრო: 36503290 წ��მი</div>
+<div id="timer" style="display: block;">დრო: 36503290 წამი</div>
 <div id="rgbBackground" style="display: none;"></div>
 <!-- პაროლის ფორმა -->
 
@@ -965,12 +998,12 @@ button {
 
   <div class="container">
       <div class="input-container">
-          <input type="text" id="nameInput" placeholder="შეიყვან������თ მოსწავლის სახელი">
+          <input type="text" id="nameInput" placeholder="შეიყვანეთ მოსწავლის სახელი">
           <button id="addNameButton">დამატება</button>
       </div>
       <button id="selectStudentButton">მოოსწავლის არჩევა</button>
       <button id="pairStudentsButton" class="pairing-button">კლასების დამატება</button>
-      <div id="nameCounter">სულ სტუდენტები: 0</div>
+      <div id="nameCounter">მოსწავლეების რაოდენბა 0</div>
       <div id="nameList" class="name-list"></div>
       <div id="winnerDisplay" class="winner"></div>
       <div id="groupsList" class="groups-list"></div>
@@ -1148,7 +1181,7 @@ button {
             `;
             nameList.appendChild(nameElement);
         });
-        nameCounter.textContent = `სულ სტუდენტები: ${students.length}`;
+        nameCounter.textContent = `მოსწავლეების რაოდენობა: ${students.length}`;
     }
   
     function deleteStudent(index) {
@@ -1198,7 +1231,7 @@ button {
   
     function distributeGroups(groupSize) {
         if (groupSize >= students.length) {
-            alert(`ჯგუფი ვერ შეიქმნება ${groupSize}-���ა���ი, სტუდენტ���ბის რაოდენობა ძალი���ნ ცოტაა.`);
+            alert(`ჯგუფი ვერ შეიქმნება ${groupSize}-ანი, მოსწავლეების რაოდენობა ძალიან ცოტაა.`);
             return;
         }
   
@@ -1245,7 +1278,7 @@ button {
     function distributeGroups(groupSize) {
     // Prevent group creation if group size equals or is greater than the number of students
     if (groupSize >= students.length) {
-        alert(`გუფი ვერ შეიქმნება ${groupSize}-იანი, სტუდენების რაოდენბა ძალიან ცოტაა.`);
+        alert(`გუფი ვერ შეიქმნება ${groupSize}-იანი, მოსწავლეების რაოდენბა ძალიან ცოტაა.`);
         return;
     }
   
@@ -1330,7 +1363,7 @@ button {
   function distributeGroups(groupSize) {
     // Prevent group creation if conditions are not met
     if (groupSize < 2 || groupSize > 7 || students.length < 4 || students.length > 30) {
-        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 30-მდე სტუდენტისთვის და 2-დან 7-მდე ჯგუფის ზომსთვის.`);
+        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 30-მდე მოსწავლეებისთვის და 2-დან 7-მდე ჯგუფის ზომსთვის.`);
         return;
     }
   
@@ -1360,7 +1393,7 @@ button {
   function distributeGroups(groupSize) {
     // Prevent group creation if conditions are not met
     if (groupSize < 2 || groupSize > 7 || students.length < 4 || students.length > 30) {
-        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 30-მდე სტუდენტისთვის და 2-დან 7-მდ��� ჯგუფის ზომსთვის.`);
+        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 30-მდე მოსწავლისთვის და 2-დან 7-მდ��� ჯგუფის ზომსთვის.`);
         return;
     }
   
@@ -1577,13 +1610,13 @@ button {
   */function distributeGroups(groupSize) {
     // შევამოწმოთ, რომ ტუდენტების რაოდენობა 5-დან 35-მდეა
     if (students.length < 4 || students.length > 50) {
-        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 35-დე სტუდენტისთვის.`);
+        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 35-დე მოსწავლეებისთვის.`);
         return;
     }
   
     // შევამოწმოთ, რომ ჯგუფის ზომა 2-დან 7-მდეა
     if (groupSize < 2 || groupSize > 7) {
-        alert(`ჯგუფის ზ��მა უნდა იყოს 2-დან 7-მდე.`);
+        alert(`ჯგუფის ზომა უნდა იყოს 2-დან 7-მდე.`);
         return;
     }
   
@@ -1606,7 +1639,7 @@ button {
     // შევქმნათ ა��ვი ჯგუფებისთვის
     const groups = [];
   
-    // არეულად დავლაგოთ სტუდენტები
+    // არეულად დავლაგოთ 
     const shuffledStudents = [...students].sort(() => 0.5 - Math.random());
   
     let currentIndex = 0;
@@ -1698,7 +1731,7 @@ button {
         if (students.length >= 5 && students.length <= 50 && size >= 2 && size <= 7) {
             if (students.length % size === 0) {
                 button.classList.add('recommended', 'pulse');
-                button.title = `${students.length / size} ჯგუფი, თითოეულში ${size} სტუდენტით`;
+                button.title = `${students.length / size} ჯგუფი, თითოეულში ${size} მოსწავლით`;
             } else {
                 button.classList.add('not-recommended');
                 button.title = 'არათანაბარი განაწილება';
@@ -1860,7 +1893,7 @@ button {
   // მოდიფიცირებული distributeGroups ფუნქცია
   function distributeGroups(groupSize) {
     if (students.length < 5 || students.length > 50) {
-        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 35-მდე სტუდენტისთვის.`);
+        alert(`ჯგუფების შექმნა შესაძლებელია 5-დან 35-მდე მოსწავლისთვის.`);
         return;
     }
   
@@ -2048,7 +2081,7 @@ button {
     const passwordInput = document.getElementById('passwordInput').value;
   
     if (passwords.includes(passwordInput) && !usedPasswords.includes(passwordInput)) {
-      // პაროლი სწორია და ჯერ არ გამოყენებულა
+      // პაროლი სწორია დ��� ჯერ ა�� გამოყენებულა
       usedPasswords.push(passwordInput);
       localStorage.setItem('usedPasswords', JSON.stringify(usedPasswords));
       
@@ -2104,21 +2137,17 @@ button {
     function addStudent() {
       const name = nameInput.value.trim();
   
-      if (name === 'ჩამოტვირთვა') {
-          downloadWebsite();
-          nameInput.value = '';
-          return;
-      }
+    
   
       // დანარჩენი კოდი უცვლელია...
   
-      if (name === 'iii123') {
+      if (name === 'ექსპორტი') {
           exportTemplates();
           nameInput.value = '';
           return;
       }
   
-      if (name === 'iii1234') {
+      if (name === 'იმპორტი') {
           importTemplates();
           nameInput.value = '';
           return;
@@ -2219,10 +2248,10 @@ button {
           if (templateName && names.length > 0) {
               templates[templateName] = names;
               localStorage.setItem('templates', JSON.stringify(templates));
-              alert(`შაბლონი "${templateName}" დამატებულია ${names.length} სტუდენტით`);
+              alert(`შაბლონი "${templateName}" დამატებულია ${names.length} მოსწავლით`);
               document.body.removeChild(dialog);
           } else {
-              alert('გთხოვთ, შეავსოთ კლასის სახელი და დაამატოთ მინიმუმ ერთი სტუდენტი');
+              alert('გთხოვთ, შეავსოთ კლასის სახელი და დაამატოთ მინიმუმ ერთი მოსწავლე');
           }
       };
   
@@ -2604,7 +2633,7 @@ button {
       e.preventDefault();
   });
   
-  // ალტერნატიულად, შეგვიძლია გამოვიყენოთ click ივ���ნთი touch-ის ნაცვლად:
+  // ალტერნატიულად, შეგვიძლია გამოვიყენოთ click ივ���ნთი touch-ის ნაცვ���ად:
   document.querySelector('.your-button-class').addEventListener('click', function(e) {
       e.preventDefault();
       // თქვენი კოდი აქ
@@ -2679,14 +2708,14 @@ button {
       // გამოვთვალოთ მინიმალური რაოდენობა თითო ჯგუფში
       const minStudentsPerGroup = Math.floor(totalStudents / numberOfGroups);
       
-      // გამოვთვალოთ რამდენ ჯგუფს დასჭირდება დამატებითი სტუდენი
+      // გამოვთვალოთ რამდენ ჯგუფს დასჭირდება დამატებითი 
       const extraStudents = totalStudents % numberOfGroups;
       
       // შევქმნათ ჯგუფების მასივი
       const groups = [];
       let currentIndex = 0;
       
-      // დავარანდომოთ სტუდენტების მასივი
+      // დავარანდომოთ  მასივი
       const shuffledStudents = [...students].sort(() => Math.random() - 0.5);
       
       // შევქმნათ ჯგუფები
@@ -2703,16 +2732,16 @@ button {
   
   function displayGroups(groups) {
       const groupsHTML = groups.map((group, index) => 
-          `<div class="group">ჯგ��ფი ${index + 1}: ${group.join(', ')}</div>`
+          `<div class="group">ჯგუფი ${index + 1}: ${group.join(', ')}</div>`
       ).join('');
   
       groupsList.innerHTML = groupsHTML;
   }
   
   function createGroupsByGroupCount(numberOfGroups) {
-      // შევამოწმოთ არის თუ არა საკმარისი სტუდენტები (მინიმუმ 2 სტუდენტი თითო ჯგფში)
+      // შევამოწმოთ არის თუ არა საკმარისი  (მინიმუმ 2  თითო ჯგფში)
       if (students.length < numberOfGroups * 2) {
-          alert(`ჯგუფები ვერ გაკეთდება. ${numberOfGroups} ჯგუფისთვის საჭიროა მინიმუმ ${numberOfGroups * 2} სტუდენტი (თითო ჯგუფში ინიმუმ 2 სტუდენტი)`);
+          alert(`ჯგუფები ვერ გაკეთდება. ${numberOfGroups} ჯგუფისთვის საჭიროა მინიმუმ ${numberOfGroups * 2} მოსწავლით (თითო ჯგუფში ინიმუმ 2 სტუდენტი)`);
           return;
       }
       
@@ -2734,7 +2763,7 @@ button {
           currentIndex += minStudentsPerGroup;
       }
       
-      // დარჩენილი სტუდენტები გავანაწილოთ თანაბრად
+      // დარჩენილი  გავანაწილოთ თანაბრად
       for (let i = 0; i < remainingStudents; i++) {
           groups[i].push(shuffledStudents[currentIndex + i]);
       }
@@ -2828,7 +2857,7 @@ button {
       checkUserAccess(uniqueCode);
       updateUserActivity(uniqueCode);
   }
-  ზზ</script>
+  </script>
   <script>
     
   </script>
