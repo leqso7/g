@@ -1,60 +1,41 @@
-const CACHE_NAME = 'offline-cache-v1';
-const OFFLINE_URLS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192x192.png',
-  './icon-512x512.png',
-  './styles.css',
-  './request.html',
-  // დავამატოთ ყველა საჭირო რესურსი
-  'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js',
-  'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js'
+const CACHE_NAME = 'site-cache-v1';
+const ASSETS = [
+  '/',
+  '/index.html',
+  '/request.html',
+  '/manifest.json',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  // დაამატეთ ყველა სტატიკური ფაილი რაც გჭირდებათ
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(OFFLINE_URLS);
+        return cache.addAll(ASSETS);
       })
   );
-  self.skipWaiting(); // დავამატოთ ეს ხაზი
 });
 
-// დავამატოთ activate ივენთი
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim(); // დავამატოთ ეს ხაზი
-});
-
-// განვაახლოთ fetch ივენთი
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
+        // თუ რესურსი ნაპოვნია ქეშში, დავაბრუნოთ ის
         if (response) {
           return response;
         }
 
-        // ინტერნეტთან კავშირის შემთხვევაში
+        // თუ არ არის ქეშში, მოვითხოვოთ ქსელიდან
         return fetch(event.request)
           .then((response) => {
-            if (!response || response.status !== 200) {
+            // შევამოწმოთ არის თუ არა ვალიდური პასუხი
+            if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
 
+            // დავაქეშოთ ახალი რესურსი
             const responseToCache = response.clone();
             caches.open(CACHE_NAME)
               .then((cache) => {
@@ -64,11 +45,10 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => {
-            // თუ ოფლაინშია და რესურსი არ არის ქეშში
+            // თუ ქსელი არ არის, დავაბრუნოთ offline გვერდი
             if (event.request.mode === 'navigate') {
-              return caches.match('./index.html');
+              return caches.match('/index.html');
             }
-            return new Response('Offline content not available');
           });
       })
   );
